@@ -1,5 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
+import EditTransaction from "./Components/EditTransaction";
+import NavBar from "./Components/NavBar";
+import NewTransaction from "./Components/NewTransaction";
 
 function App() {
   return (
