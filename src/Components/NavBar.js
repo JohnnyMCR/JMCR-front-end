@@ -10,8 +10,7 @@ export default function NavBar({ total }) {
         <Link to="/transactions">Transactions</Link>
       </h1>
       <button>
-        NewTransaction
-        {/* <Link to="new-transaction">New Transaction</Link> */}
+        <Link to="/transaction/new">New Transaction</Link>
       </button>
     </nav>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import { v4 as uuid } from "uuid";
 const API = process.env.REACT_APP_API_URL;
 
 export default function NewTransaction() {
@@ -12,74 +13,83 @@ export default function NewTransaction() {
     date: "",
     from: "",
     category: "",
+    deposit: false,
   });
+
+  const id = uuid();
 
   const handleTextChange = (event) => {
     setTransaction({ ...transaction, [event.target.id]: event.target.value });
   };
 
   const handleCheckboxChange = () => {
-    setTransaction({ ...transaction, isFavorite: !transaction.isFavorite });
+    setTransaction({ ...transaction, deposit: !transaction.deposit });
   };
 
   const addTransaction = (newTransaction) => {
     axios
-      .post(`${API}/Transactions`, newTransaction)
+      .post(`${API}/transactions`, newTransaction)
       .then(() => {
-        navigate('/Transactions');
+        navigate('/transactions');
       }).catch((c) => console.error("catch", c))
   }
 
-
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTransaction(NewTransaction)
+    transaction.id = id;
+    addTransaction(transaction)
   };
+
   return (
     <div className="New">
       <form onSubmit={handleSubmit}>
-        <label htmlFor="name">Name:</label>
+        <label>Name:</label>
         <input
-          id="name"
-          value={transaction.name}
-          type="text"
-          onChange={handleTextChange}
-          placeholder="Name of Website"
+          id="item_name"
+          value={transaction.item_name}
           required
+          type="text"
+          onChange={handleTextChange}          
         />
-        <label htmlFor="url">URL:</label>
+        <label htmlFor="amount">Amount:</label>
         <input
-          id="url"
+          id="amount"
           type="text"
-          pattern="http[s]*://.+"
           required
-          value={transaction.url}
-          placeholder="http://"
+          value={transaction.amount}
           onChange={handleTextChange}
         />
-        <label htmlFor="category">Category:</label>
+        <label htmlFor="date">Date:</label>
+        <input
+          id="date"
+          type="text"
+          required
+          value={transaction.date}
+          onChange={handleTextChange}
+        />
+         <label htmlFor="from">From:</label>
+        <input
+          id="from"
+          type="text"
+          required
+          value={transaction.from}
+          onChange={handleTextChange}
+        />
+         <label htmlFor="category">Category:</label>
         <input
           id="category"
           type="text"
-          name="category"
+          required
           value={transaction.category}
-          placeholder="educational, inspirational, ..."
           onChange={handleTextChange}
         />
-        <label htmlFor="isFavorite">Favorite:</label>
+        <label htmlFor="deposit">Deposit:</label>
         <input
-          id="isFavorite"
+          id="deposit"
           type="checkbox"
+          name="deposit"
           onChange={handleCheckboxChange}
-          checked={transaction.isFavorite}
-        />
-        <label htmlFor="description">Description:</label>
-        <textarea
-          id="description"
-          name="description"
-          value={transaction.description}
-          onChange={handleTextChange}
-          placeholder="Describe why you Transactioned this site"
+          checked={transaction.deposit}
         />
         <br />
         <input type="submit" />

@@ -3,42 +3,41 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 const API = process.env.REACT_APP_API_URL;
 
-export default function Transaction() {
+export default function Transactions() {
 
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
-      axios
-        .get(`${API}/transactions`)
-        .then((response) => {
-          console.log(response.data);
-          setTransactions(response.data);
-        })
+        axios
+            .get(`${API}/transactions`)
+            .then((response) => {
+                console.log(response.data);
+                setTransactions(response.data);
+            })
     }, []);
 
-    let total = transactions.reduce((a, statement) => {
-    
-        if(statement.deposit){
-            return (a + Number(statement.amount))
+    let total = transactions.reduce((a, transaction) => {
+        if (transaction.deposit) {
+            return (a + Number(transaction.amount))
         } else {
-            return (a - Number(statement.amount))
+            return (a - Number(transaction.amount))
         }
-    },0)
+    }, 0)
 
 
     return (
         <div>
             <header className="total">
-                <h3>Bank Account Total: <span style={{color: total > 0 ? "green" : "red"}}>${total}</span></h3>
+                <h3>Expense Total: <span style={{ color: total > 0 ? "green" : "red" }}>${total}</span></h3>
             </header>
-            {transactions.map((statement) => {
+            {transactions.map((transaction) => {
                 return (
-                    <div key={statement.id} className="transactions">
-                        <span>{statement.date}</span>
-                        <Link to={`/transactions/${transactions.indexOf(statement)}`}>
-                        <h3>{statement.item_name}</h3>
+                    <div key={transaction.id} className="transactions">
+                        <span>{transaction.date}</span>
+                        <Link to={`/transaction/${transactions.indexOf(transaction)}`}>
+                            <h3>{transaction.item_name}</h3>
                         </Link>
-                        <span style={{color: statement.deposit ? "green" : "red"}} className="money">{!statement.deposit ? "-": ""}{statement.amount}</span>
+                        <span style={{ color: transaction.deposit ? "green" : "red" }} className="money">{!transaction.deposit ? "-" : ""}{transaction.amount}</span>
                     </div>
                 )
             })}
