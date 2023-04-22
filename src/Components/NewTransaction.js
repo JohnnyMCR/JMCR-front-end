@@ -9,7 +9,7 @@ export default function NewTransaction() {
     id: "",
     item_name: "",
     amount: "",
-    date: false,
+    date: "",
     from: "",
     category: "",
   });

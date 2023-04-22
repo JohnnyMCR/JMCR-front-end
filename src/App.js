@@ -5,7 +5,6 @@ import NavBar from "./Components/NavBar";
 import NewTransaction from "./Components/NewTransaction";
 import Home from "./Components/Home";
 import Error from "./Components/Error";
-// import { useState, useEffect } from "react";
 // const axios from "axios";
 
 const API = process.env.REACT_APP_API_URL

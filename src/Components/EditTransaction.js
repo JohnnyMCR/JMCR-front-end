@@ -3,9 +3,9 @@ import { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 const API = process.env.REACT_APP_API_URL;
 
-function EditTransaction() {
+export default function EditTransaction() {
     const navigate = useNavigate();
-    let { index } = useParams();
+    let { id } = useParams();
 
     const [transaction, setTransaction] = useState({
         id: "",
@@ -30,19 +30,19 @@ function EditTransaction() {
 
     useEffect(() => {
         axios
-            .get(`${API}/Transactions/${index}`)
+            .get(`${API}/Transactions/${id}`)
             .then((response) => {
                 setTransaction(response.data)
             })
             .catch((e) => console.error(e))
-    }, [index]);
+    }, [id]);
 
     const updateTransaction = () => {
         axios
-            .put(`${API}/transactions/${index}`, transaction)
+            .put(`${API}/transactions/${id}`, transaction)
             .then((response) => {
                 setTransaction(response.data);
-                navigate(`/transactions/${index}`)
+                navigate(`/transactions/${id}`)
             }
             )
             .catch((e) => console.error(e));
@@ -55,60 +55,65 @@ function EditTransaction() {
 
     return (
         <div className="Edit">
-            <form onSubmit={handleSubmit}>
-                <label htmlFor="date">Date:</label>
-                <input
-                    className="form-edit"
-                    id="date"
-                    value={transaction.date}
-                    type="text"
-                    onChange={handleTextChange}
-                    placeholder="date"
-                    required
-                />
-                <label htmlFor="url">URL:</label>
-                <input
-                    id="url"
-                    type="text"
-                    pattern="http[s]*://.+"
-                    required
-                    value={transaction.url}
-                    placeholder="http://"
-                    onChange={handleTextChange}
-                />
-                <label htmlFor="category">Category:</label>
-                <input
-                    id="category"
-                    type="text"
-                    name="category"
-                    value={transaction.category}
-                    placeholder="educational, inspirational, ..."
-                    onChange={handleTextChange}
-                />
-                <label htmlFor="isFavorite">Favorite:</label>
-                <input
-                    id="isFavorite"
-                    type="checkbox"
-                    onChange={handleCheckboxChange}
-                    checked={transaction.isFavorite}
-                />
-                <label htmlFor="description">Description:</label>
-                <textarea
-                    id="description"
-                    name="description"
-                    value={transaction.description}
-                    onChange={handleTextChange}
-                    placeholder="Describe why you Transactioned this site"
-                />
-                <br />
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="date">Date:</label>
+            <input
+              className="form-control"
+              id="date"
+              value={transaction.date}
+              type="text"
+              onChange={handleTextChange}
+              placeholder="date"
+              required
+            />
+            <br />
+            <label htmlFor="item_name" className="form-label">Name:</label>
+            <input
+              className="form-control"
+              id="itemName"
+              type="text"
+              value={transaction.itemName}
+              onChange={handleTextChange}
+              placeholder="Name"
+              required
+            />
+            <br />
+            <label className="form-label" htmlFor="amount">
+              Amount:
+            </label>
+            <input
+              className="form-control"
+              id="amount"
+              type="number"
+              value={transaction.amount}
+              onChange={handleNumberChange}
+              required
+            />
+            <br />
+            <label htmlFor="form-label">Category:</label>
+            <select
+              className="form-select"
+              id="category"
+              type="text"
+              checked={transaction.category}
+              onChange={handleSelectChange}
+            >
+              <option value="income">Income</option>
+              <option value="gift">Gift</option>
+              <option value="food">Food</option>
+              <option value="entertainment">Entertainment</option>
+              <option value="medical">Medical</option>
+              <option value="bill">Bill</option>
+              <option value="groceries">Groceries</option>
+              <option value="transportation-related">Transportation-related</option>
+            </select>
+            <br />
 
                 <input type="submit" />
             </form>
-            <Link to={`/Transactions/${index}`}>
+            <Link to={`/Transactions/${id}`}>
                 <button>Nevermind!</button>
             </Link>
         </div>
     );
 }
-
-export default EditTransaction;
