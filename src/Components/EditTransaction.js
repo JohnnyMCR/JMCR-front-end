@@ -7,20 +7,25 @@ function EditTransaction() {
     const navigate = useNavigate();
     let { index } = useParams();
 
-    const [Transaction, setTransaction] = useState({
-        name: "",
-        url: "",
+    const [transaction, setTransaction] = useState({
+        id: "",
+        item_name: "",
+        amount: 0,
+        date: "",
+        from: "",
         category: "",
-        description: "",
-        isFavorite: false,
     });
 
     const handleTextChange = (event) => {
-        setTransaction({ ...Transaction, [event.target.id]: event.target.value });
+        setTransaction({ ...transaction, [event.target.id]: event.target.value });
     };
 
-    const handleCheckboxChange = () => {
-        setTransaction({ ...Transaction, isFavorite: !Transaction.isFavorite });
+    const handleNumberChange = (event) => {
+        setTransaction({ ...transaction, [event.target.id]: event.target.value });
+    };
+
+    const handleSelectChange = (event) => {
+        setTransaction({ ...transaction, [event.target.id]: event.target.value });
     };
 
     useEffect(() => {
@@ -30,35 +35,35 @@ function EditTransaction() {
                 setTransaction(response.data)
             })
             .catch((e) => console.error(e))
-
     }, [index]);
 
     const updateTransaction = () => {
         axios
-            .put(`${API}/Transactions/${index}`, Transaction)
+            .put(`${API}/transactions/${index}`, transaction)
             .then((response) => {
                 setTransaction(response.data);
-                navigate(`/Transactions/${index}`)
+                navigate(`/transactions/${index}`)
             }
             )
-            .catch((e) => console.warn("warn", e));
+            .catch((e) => console.error(e));
     }
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        updateTransaction();
+        updateTransaction(EditTransaction);
     };
 
     return (
         <div className="Edit">
             <form onSubmit={handleSubmit}>
-                <label htmlFor="name">Name:</label>
+                <label htmlFor="date">Date:</label>
                 <input
-                    id="name"
-                    value={Transaction.name}
+                    className="form-edit"
+                    id="date"
+                    value={transaction.date}
                     type="text"
                     onChange={handleTextChange}
-                    placeholder="Name of Website"
+                    placeholder="date"
                     required
                 />
                 <label htmlFor="url">URL:</label>
@@ -67,7 +72,7 @@ function EditTransaction() {
                     type="text"
                     pattern="http[s]*://.+"
                     required
-                    value={Transaction.url}
+                    value={transaction.url}
                     placeholder="http://"
                     onChange={handleTextChange}
                 />
@@ -76,7 +81,7 @@ function EditTransaction() {
                     id="category"
                     type="text"
                     name="category"
-                    value={Transaction.category}
+                    value={transaction.category}
                     placeholder="educational, inspirational, ..."
                     onChange={handleTextChange}
                 />
@@ -85,13 +90,13 @@ function EditTransaction() {
                     id="isFavorite"
                     type="checkbox"
                     onChange={handleCheckboxChange}
-                    checked={Transaction.isFavorite}
+                    checked={transaction.isFavorite}
                 />
                 <label htmlFor="description">Description:</label>
                 <textarea
                     id="description"
                     name="description"
-                    value={Transaction.description}
+                    value={transaction.description}
                     onChange={handleTextChange}
                     placeholder="Describe why you Transactioned this site"
                 />

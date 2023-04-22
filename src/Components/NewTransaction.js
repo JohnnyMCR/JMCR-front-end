@@ -3,22 +3,23 @@ import axios from 'axios';
 import { useNavigate } from "react-router-dom";
 const API = process.env.REACT_APP_API_URL;
 
-function NewTransaction() {
+export default function NewTransaction() {
   const navigate = useNavigate();
-  const [Transaction, setTransaction] = useState({
-    name: "",
-    url: "",
+  const [transaction, setTransaction] = useState({
+    id: "",
+    item_name: "",
+    amount: "",
+    date: false,
+    from: "",
     category: "",
-    isFavorite: false,
-    description: "",
   });
 
   const handleTextChange = (event) => {
-    setTransaction({ ...Transaction, [event.target.id]: event.target.value });
+    setTransaction({ ...transaction, [event.target.id]: event.target.value });
   };
 
   const handleCheckboxChange = () => {
-    setTransaction({ ...Transaction, isFavorite: !Transaction.isFavorite });
+    setTransaction({ ...transaction, isFavorite: !transaction.isFavorite });
   };
 
   const addTransaction = (newTransaction) => {
@@ -32,7 +33,7 @@ function NewTransaction() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    addTransaction()
+    addTransaction(NewTransaction)
   };
   return (
     <div className="New">
@@ -40,7 +41,7 @@ function NewTransaction() {
         <label htmlFor="name">Name:</label>
         <input
           id="name"
-          value={Transaction.name}
+          value={transaction.name}
           type="text"
           onChange={handleTextChange}
           placeholder="Name of Website"
@@ -52,7 +53,7 @@ function NewTransaction() {
           type="text"
           pattern="http[s]*://.+"
           required
-          value={Transaction.url}
+          value={transaction.url}
           placeholder="http://"
           onChange={handleTextChange}
         />
@@ -61,7 +62,7 @@ function NewTransaction() {
           id="category"
           type="text"
           name="category"
-          value={Transaction.category}
+          value={transaction.category}
           placeholder="educational, inspirational, ..."
           onChange={handleTextChange}
         />
@@ -70,13 +71,13 @@ function NewTransaction() {
           id="isFavorite"
           type="checkbox"
           onChange={handleCheckboxChange}
-          checked={Transaction.isFavorite}
+          checked={transaction.isFavorite}
         />
         <label htmlFor="description">Description:</label>
         <textarea
           id="description"
           name="description"
-          value={Transaction.description}
+          value={transaction.description}
           onChange={handleTextChange}
           placeholder="Describe why you Transactioned this site"
         />
@@ -86,5 +87,3 @@ function NewTransaction() {
     </div>
   );
 }
-
-export default NewTransaction;

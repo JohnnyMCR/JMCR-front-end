@@ -1,13 +1,17 @@
 import { Link } from "react-router-dom";
 
-export default function NavBar() {
+export default function NavBar({ total }) {
   return (
     <nav>
       <h1>
-        <Link to="/bookmarks">Transaction</Link>
+        <Link to="/">Home</Link>
+      </h1>
+      <h1>
+        <Link to="/transactions">Transactions</Link>
       </h1>
       <button>
-        <Link to="/bookmarks/new">New Transaction</Link>
+        NewTransaction
+        {/* <Link to="new-transaction">New Transaction</Link> */}
       </button>
     </nav>
   );
