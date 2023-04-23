@@ -7,58 +7,57 @@ export default function EditTransaction() {
   const navigate = useNavigate();
   let { id } = useParams();
 
-  const [editTransaction, setEditTransaction] = useState({
+  const [transaction, editTransaction] = useState({
     id: "",
     item_name: "",
-    amount: 0,
+    amount: "",
     date: "",
     from: "",
     category: "",
     deposit: false,
   });
 
-  const handleTextChange = (event) => {
-    setEditTransaction({ ...editTransaction, [event.target.id]: event.target.value });
+  function handleTextChange (event) {
+    editTransaction({ ...transaction, [event.target.id]: event.target.value });
+  };
+
+ function handleNumberChange (event) {
+    editTransaction({ ...transaction, [event.target.id]: Number (event.target.value)});
   };
 
   const handleCheckboxChange = () => {
-    setEditTransaction({ ...editTransaction, deposit: !editTransaction.deposit });
+    editTransaction({ ...transaction, deposit: !transaction.deposit });
   };
-  // const handleNumberChange = (event) => {
-  //   setTransaction({ ...transaction, [event.target.id]: event.target.value });
-  // };
 
   // const handleSelectChange = (event) => {
   //   setTransaction({ ...transaction, [event.target.id]: event.target.value });
   // };
 
+  function handleSubmit (event) {
+    event.preventDefault();
+    updateTransaction(transaction);
+  };
+
   useEffect(() => {
     axios
-      .get(`${API}/Transactions/${id}`)
+      .get(`${API}/transactions/${id}`)
       .then((response) => {
-        setEditTransaction(response.data)
+        editTransaction(response.data.transactions);
       })
-      .catch((e) => console.error(e))
+      .catch((e) => console.error("catch", e))
   }, [id]);
 
-  const updateTransaction = () => {
+  function updateTransaction () {
     axios
-      .put(`${API}/transactions/${id}`, editTransaction)
-      .then((response) => {
-        setEditTransaction(response.data);
+      .put(`${API}/transactions/${id}`, transaction)
+      .then(() => {
         navigate(`/transactions/${id}`)
-      }
-      )
+      })
       .catch((e) => console.error(e));
   }
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    updateTransaction(editTransaction);
-  };
-
   return (
-    <div className="edit">
+    <div className="editTransaction">
       <form className="edit" onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
         <input
@@ -74,7 +73,7 @@ export default function EditTransaction() {
           type="text"
           required
           value={editTransaction.amount}
-          onChange={handleTextChange}
+          onChange={handleNumberChange}
         />
         <label htmlFor="date">Date:</label>
         <input

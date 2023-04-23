@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,13 @@
   to {
     transform: rotate(360deg);
   }
+} */
+.App{
+  text-align: center;
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  font-size: large;
+}
+
+.App button, .App input, .App select{
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif
 }
