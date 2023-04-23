@@ -19,7 +19,6 @@ export default function App() {
           <Route path="/transaction/new" element={<NewTransaction />} />
           <Route path="/transaction/edit/:id" element={<EditTransaction />} />
           <Route path='*' element={<Error />} />
-
         </Routes>
       </Router>
     </div>

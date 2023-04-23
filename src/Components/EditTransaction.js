@@ -7,7 +7,7 @@ export default function EditTransaction() {
   const navigate = useNavigate();
   let { id } = useParams();
 
-  const [transaction, setTransaction] = useState({
+  const [editTransaction, setEditTransaction] = useState({
     id: "",
     item_name: "",
     amount: 0,
@@ -18,11 +18,11 @@ export default function EditTransaction() {
   });
 
   const handleTextChange = (event) => {
-    setTransaction({ ...transaction, [event.target.id]: event.target.value });
+    setEditTransaction({ ...editTransaction, [event.target.id]: event.target.value });
   };
 
   const handleCheckboxChange = () => {
-    setTransaction({ ...transaction, deposit: !transaction.deposit });
+    setEditTransaction({ ...editTransaction, deposit: !editTransaction.deposit });
   };
   // const handleNumberChange = (event) => {
   //   setTransaction({ ...transaction, [event.target.id]: event.target.value });
@@ -36,16 +36,16 @@ export default function EditTransaction() {
     axios
       .get(`${API}/Transactions/${id}`)
       .then((response) => {
-        setTransaction(response.data)
+        setEditTransaction(response.data)
       })
       .catch((e) => console.error(e))
   }, [id]);
 
   const updateTransaction = () => {
     axios
-      .put(`${API}/transactions/${id}`, transaction)
+      .put(`${API}/transactions/${id}`, editTransaction)
       .then((response) => {
-        setTransaction(response.data);
+        setEditTransaction(response.data);
         navigate(`/transactions/${id}`)
       }
       )
@@ -54,61 +54,59 @@ export default function EditTransaction() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    updateTransaction(EditTransaction);
+    updateTransaction(editTransaction);
   };
 
   return (
-    <div className="Edit">
-      <form onSubmit={handleSubmit}>
-        <label>Name:</label>
+    <div className="edit">
+      <form className="edit" onSubmit={handleSubmit}>
+        <label htmlFor="name">Name:</label>
         <input
           id="item_name"
-          value={transaction.item_name}
+          value={editTransaction.item_name}
           required
           type="text"
           onChange={handleTextChange}
-          placeholder="Name of Website"
-          
         />
-        <label htmlFor="Amount">Amount:</label>
+        <label htmlFor="amount">Amount:</label>
         <input
           id="amount"
           type="text"
           required
-          value={transaction.amount}
+          value={editTransaction.amount}
           onChange={handleTextChange}
         />
-        <label htmlFor="Date">Date:</label>
+        <label htmlFor="date">Date:</label>
         <input
           id="date"
           type="text"
           required
-          value={transaction.date}
+          value={editTransaction.date}
           onChange={handleTextChange}
         />
-         <label htmlFor="From">From:</label>
+        <label htmlFor="from">From:</label>
         <input
           id="from"
           type="text"
           required
-          value={transaction.from}
+          value={editTransaction.from}
           onChange={handleTextChange}
         />
-         <label htmlFor="Category">Category:</label>
+        <label htmlFor="category">Category:</label>
         <input
           id="category"
           type="text"
           required
-          value={transaction.category}
+          value={editTransaction.category}
           onChange={handleTextChange}
         />
-        <label htmlFor="Deposit">Deposit:</label>
+        <label htmlFor="deposit">Deposit:</label>
         <input
           id="deposit"
           type="checkbox"
           name="deposit"
           onChange={handleCheckboxChange}
-          checked={transaction.deposit}
+          checked={editTransaction.deposit}
         />
         <br />
         <input type="submit" />
