@@ -11,7 +11,7 @@ Getting Started:
 - Navigate to the project directory: cd budgeting-app
 - Install dependencies: npm install
 - Start the server: npm start
-- The app should be running on http://localhost:4444/
+- The app is running on http://localhost:4444/
 
 Trello: https://trello.com/b/I7hm2Tv2/jmcr-budget-app
 Back-end github repository: https://github.com/JohnnyMCR/JMCR-Budget-App-Backend

@@ -6,7 +6,6 @@ const API = process.env.REACT_APP_API_URL;
 export default function TransactionIndex() {
 
     const [transaction, setTransactions] = useState({});
-
     let { id } = useParams();
     let navigate = useNavigate();
 
@@ -16,8 +15,10 @@ export default function TransactionIndex() {
             .then((response) => {
                 console.log(response.data);
                 setTransactions(response.data);
+            }).catch(() => {
+                navigate("/error")
             })
-    }, [id]);
+    }, [id, navigate]);
 
     const handleDelete = () => {
         axios

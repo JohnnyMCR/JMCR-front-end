@@ -1,13 +1,14 @@
-import axios from "axios";
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router-dom";
+// import { v4 as uuid } from "uuid";
 const API = process.env.REACT_APP_API_URL;
 
 export default function EditTransaction() {
   const navigate = useNavigate();
   let { id } = useParams();
-
-  const [transaction, editTransaction] = useState({
+  
+  const [transaction, setTransaction] = useState({
     id: "",
     item_name: "",
     amount: "",
@@ -17,70 +18,66 @@ export default function EditTransaction() {
     deposit: false,
   });
 
-  function handleTextChange (event) {
-    editTransaction({ ...transaction, [event.target.id]: event.target.value });
-  };
-
- function handleNumberChange (event) {
-    editTransaction({ ...transaction, [event.target.id]: Number (event.target.value)});
-  };
-
-  const handleCheckboxChange = () => {
-    editTransaction({ ...transaction, deposit: !transaction.deposit });
-  };
-
-  // const handleSelectChange = (event) => {
-  //   setTransaction({ ...transaction, [event.target.id]: event.target.value });
-  // };
-
-  function handleSubmit (event) {
-    event.preventDefault();
-    updateTransaction(transaction);
-  };
+  // const id = uuid();
 
   useEffect(() => {
     axios
       .get(`${API}/transactions/${id}`)
       .then((response) => {
-        editTransaction(response.data.transactions);
+        setTransaction(response.data);
       })
-      .catch((e) => console.error("catch", e))
   }, [id]);
 
-  function updateTransaction () {
+  const handleTextChange = (event) => {
+    setTransaction({ ...transaction, [event.target.id]: event.target.value });
+  };
+
+  const handleCheckboxChange = () => {
+    setTransaction({ ...transaction, deposit: !transaction.deposit });
+  };
+
+  const editTransaction = (changeTransaction) => {
     axios
-      .put(`${API}/transactions/${id}`, transaction)
+      .post(`${API}/transactions`, changeTransaction)
       .then(() => {
-        navigate(`/transactions/${id}`)
-      })
-      .catch((e) => console.error(e));
+        navigate('/transactions');
+      }).catch((c) => console.error("catch", c))
   }
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    transaction.id = id;
+    editTransaction(transaction)
+  };
+
   return (
-    <div className="editTransaction">
-      <form className="edit" onSubmit={handleSubmit}>
+    <div className="edit">
+      <form onSubmit={handleSubmit}>
         <label htmlFor="name">Name:</label>
         <input
           id="item_name"
-          value={editTransaction.item_name}
+          value={transaction.item_name}
           required
           type="text"
+          placeholder="Name of item"
           onChange={handleTextChange}
         />
         <label htmlFor="amount">Amount:</label>
         <input
           id="amount"
-          type="text"
+          type="type"
           required
-          value={editTransaction.amount}
-          onChange={handleNumberChange}
+          placeholder="$"
+          value={transaction.amount}
+          onChange={handleTextChange}
         />
         <label htmlFor="date">Date:</label>
         <input
           id="date"
-          type="text"
+          type="type"
           required
-          value={editTransaction.date}
+          placeholder="DD-MM-YYYY"
+          value={transaction.date}
           onChange={handleTextChange}
         />
         <label htmlFor="from">From:</label>
@@ -88,7 +85,8 @@ export default function EditTransaction() {
           id="from"
           type="text"
           required
-          value={editTransaction.from}
+          placeholder="supermarket, bus, ..."
+          value={transaction.from}
           onChange={handleTextChange}
         />
         <label htmlFor="category">Category:</label>
@@ -96,7 +94,8 @@ export default function EditTransaction() {
           id="category"
           type="text"
           required
-          value={editTransaction.category}
+          placeholder="expenses, tranportation, ..."
+          value={transaction.category}
           onChange={handleTextChange}
         />
         <label htmlFor="deposit">Deposit:</label>
@@ -105,7 +104,7 @@ export default function EditTransaction() {
           type="checkbox"
           name="deposit"
           onChange={handleCheckboxChange}
-          checked={editTransaction.deposit}
+          checked={transaction.deposit}
         />
         <br />
         <input type="submit" />

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from 'axios';
-import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { useNavigate, } from "react-router-dom";
 import { v4 as uuid } from "uuid";
 const API = process.env.REACT_APP_API_URL;
 
@@ -41,45 +41,50 @@ export default function NewTransaction() {
   };
 
   return (
-    <div className="New">
+    <div className="new">
       <form onSubmit={handleSubmit}>
-        <label>Name:</label>
+        <label htmlFor="name">Name:</label>
         <input
           id="item_name"
           value={transaction.item_name}
           required
           type="text"
-          onChange={handleTextChange}          
+          placeholder="Name of item"
+          onChange={handleTextChange}
         />
         <label htmlFor="amount">Amount:</label>
         <input
           id="amount"
-          type="text"
+          type="type"
           required
+          placeholder="$"
           value={transaction.amount}
           onChange={handleTextChange}
         />
         <label htmlFor="date">Date:</label>
         <input
           id="date"
-          type="text"
+          type="type"
           required
+          placeholder="DD-MM-YYYY"
           value={transaction.date}
           onChange={handleTextChange}
         />
-         <label htmlFor="from">From:</label>
+        <label htmlFor="from">From:</label>
         <input
           id="from"
           type="text"
           required
+          placeholder="supermarket, bus ..."
           value={transaction.from}
           onChange={handleTextChange}
         />
-         <label htmlFor="category">Category:</label>
+        <label htmlFor="category">Category:</label>
         <input
           id="category"
           type="text"
           required
+          placeholder="expenses, tranportation, ..."
           value={transaction.category}
           onChange={handleTextChange}
         />

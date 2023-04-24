@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
-import "./NavBar.css";
-export default function NavBar({ total }) {
+
+export default function NavBar() {
   return (
     <nav>
+      <nav><u>Budgeting App</u></nav>
+
       <h1>
         <Link to="/">Home</Link>
       </h1>
